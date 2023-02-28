@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/member")
 public class MemberController {
 
-    @GetMapping("/users")
+    @GetMapping("/v1/users")
     public ResponseEntity<String> findByUsers(){
         return new ResponseEntity<>("OK", HttpStatus.OK );
     }
