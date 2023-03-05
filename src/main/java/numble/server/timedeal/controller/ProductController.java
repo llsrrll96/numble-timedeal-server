@@ -65,8 +65,4 @@ public class ProductController {
         }
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"카테고리 삭제 성공",true),HttpStatus.OK);
     }
-
-    /**
-    * 타임딜 등록 / 삭제 / 목록
-    * */
 }
