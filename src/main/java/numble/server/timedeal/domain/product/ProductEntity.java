@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.server.timedeal.domain.category.Category;
-import numble.server.timedeal.domain.timedeal.Timedeal;
 import numble.server.timedeal.domain.user.UserEntity;
 import numble.server.timedeal.model.BaseEntity;
 
@@ -26,10 +25,6 @@ public class ProductEntity extends BaseEntity {
     @JoinColumn(name = "userId")
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity userEntity;
-
-    @OneToOne
-    @JoinColumn(name = "timedealId")
-    private Timedeal timedeal;
 
     @Column(length = 30)
     private String productCode;
@@ -56,10 +51,6 @@ public class ProductEntity extends BaseEntity {
         this.productPrice = productPrice;
         this.salePrice = salePrice;
         this.productAmount = productAmount;
-    }
-
-    public void setTimedeal(Timedeal timedeal) {
-        this.timedeal = timedeal;
     }
 
     public void setCategory(Category category) {
