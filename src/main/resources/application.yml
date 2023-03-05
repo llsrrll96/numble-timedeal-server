@@ -1,6 +1,8 @@
 spring:
   application:
     name: timedeal-service
+  profiles:
+    default: dev
   jpa:
     show-sql: true
     properties:
@@ -8,8 +10,3 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: update
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/timedeal?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
-    username: admin
-    password: admin
