@@ -1,6 +1,7 @@
 package numble.server.timedeal.domain.timedeal;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.server.timedeal.domain.product.ProductEntity;
@@ -17,9 +18,17 @@ public class Timedeal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long timedealId;
     @JoinColumn(name = "productId")
-    @OneToOne(mappedBy = "timedeal",fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProductEntity product;
     private int limitedAmount;
     private LocalDateTime startDatetime;
     private int period;
+
+    @Builder
+    public Timedeal(ProductEntity product, int limitedAmount, LocalDateTime startDatetime, int period) {
+        this.product = product;
+        this.limitedAmount = limitedAmount;
+        this.startDatetime = startDatetime;
+        this.period = period;
+    }
 }
