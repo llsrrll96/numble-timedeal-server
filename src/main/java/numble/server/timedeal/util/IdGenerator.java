@@ -1,4 +1,4 @@
-package numble.server.timedeal.model;
+package numble.server.timedeal.util;
 
 
 public class IdGenerator {
