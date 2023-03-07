@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.server.timedeal.model.BaseEntity;
-import numble.server.timedeal.model.IdGenerator;
+import numble.server.timedeal.util.IdGenerator;
 import numble.server.timedeal.model.UserEnum;
 
 import javax.persistence.*;
@@ -29,8 +29,8 @@ public class UserEntity extends BaseEntity {
     private String email;
     @Column(length = 100)
     private String profile;
-    @Column(length = 1)
-    private String emailCheck;
+    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
+    private boolean emailCheck;
     @Column(length = 10)
     private String grade;
     @Column(length = 10)
@@ -51,11 +51,15 @@ public class UserEntity extends BaseEntity {
         this.profile = profile;
     }
 
-    public void setEmailCheck(String emailCheck) {
+    public void setEmailCheck(boolean emailCheck) {
         this.emailCheck = emailCheck;
     }
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public void setRole(UserEnum role) {
+        this.role = role;
     }
 }
