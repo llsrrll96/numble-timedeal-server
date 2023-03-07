@@ -37,7 +37,6 @@ public class TimedealService {
                 .product(product)
                 .limitedAmount(reqTimedeal.getLimited_amount())
                 .startDatetime(reqTimedeal.getStart_datetime())
-                .period(reqTimedeal.getPeriod())
                 .build();
     }
 
