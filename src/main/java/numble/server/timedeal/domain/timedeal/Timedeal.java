@@ -22,13 +22,11 @@ public class Timedeal {
     private ProductEntity product;
     private int limitedAmount;
     private LocalDateTime startDatetime;
-    private int period;
 
     @Builder
-    public Timedeal(ProductEntity product, int limitedAmount, LocalDateTime startDatetime, int period) {
+    public Timedeal(ProductEntity product, int limitedAmount, LocalDateTime startDatetime) {
         this.product = product;
         this.limitedAmount = limitedAmount;
         this.startDatetime = startDatetime;
-        this.period = period;
     }
 }
