@@ -7,8 +7,10 @@ import numble.server.timedeal.domain.category.CategoryDto;
 import numble.server.timedeal.dto.APIMessage;
 import numble.server.timedeal.dto.request.ReqProduct;
 import numble.server.timedeal.dto.response.RespProduct;
+import numble.server.timedeal.model.UserEnum;
 import numble.server.timedeal.service.CategoryService;
 import numble.server.timedeal.service.ProductService;
+import numble.server.timedeal.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +22,22 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     @PostMapping("/v1/products")
     private ResponseEntity<APIMessage<RespProduct>> productCreation(@RequestBody ReqProduct reqProduct){
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"상품등록",productService.productCreation(reqProduct)),HttpStatus.CREATED);
+        if(userService.checkUserRole(reqProduct.getUser_id(), UserEnum.ROLE_ADMIN)){
+            return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"상품등록성공",productService.productCreation(reqProduct)),HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "상품등록실패",new RespProduct()),HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/v1/products/{productid}")
     private ResponseEntity<APIMessage<RespProduct>> updateProduct(@PathVariable Long productid, @RequestBody ReqProduct reqProduct){
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"상품수정",productService.updateProduct(productid, reqProduct)),HttpStatus.OK);
-
+        if(userService.checkUserRole(reqProduct.getUser_id(), UserEnum.ROLE_ADMIN)) {
+            return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"상품수정성공",productService.updateProduct(productid, reqProduct)),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "상품수정실패",new RespProduct()),HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/v1/products/{productid}")

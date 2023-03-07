@@ -5,15 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import numble.server.timedeal.domain.user.UserEntity;
 import numble.server.timedeal.domain.user.UserRepository;
 import numble.server.timedeal.dto.APIMessage;
+import numble.server.timedeal.dto.request.ReqRole;
 import numble.server.timedeal.dto.request.ReqSignin;
 import numble.server.timedeal.dto.request.ReqSignup;
 import numble.server.timedeal.dto.response.RespUser;
+import numble.server.timedeal.model.UserEnum;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -21,9 +24,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private ModelMapper modelMapper = new ModelMapper();
+
     public APIMessage<Boolean> signup(ReqSignup reqSignup) {
-        UserEntity userEntity = userRepository.save(convertToUserEntity(reqSignup));
-        if(userEntity == null) {
+        UserEntity user = convertToUserEntity(reqSignup);
+        user.setRole(UserEnum.ROLE_USER);
+        UserEntity savedUserEntity = userRepository.save(user);
+        if(savedUserEntity == null) {
             return new APIMessage<>(HttpStatus.OK.toString(),"회원가입실패",false);
         }
         APIMessage<Boolean> apiMessage = new APIMessage<>();
@@ -53,12 +59,27 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-
     public RespUser findById(String id) {
         UserEntity userEntity = userRepository.findById(id).get();
         RespUser respUser = convertToDto(userEntity);
         respUser.setCreatedAt(userEntity.getCreatedDate());
         return respUser;
+    }
+
+    public Page<UserEntity> userPagination(Pageable pageable) {
+        PageRequest pr = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        return userRepository.findAll(pr);
+    }
+
+    @Transactional
+    public boolean updateRole(ReqRole reqRole) {
+        try{
+            UserEntity userEntity =  userRepository.findById(reqRole.getUserid()).get();
+            userEntity.setRole(UserEnum.from(reqRole.getRole()));
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     private RespUser convertToDto(UserEntity userEntity){
@@ -75,8 +96,11 @@ public class UserService {
                 .build();
     }
 
-    public Page<UserEntity> userPagination(Pageable pageable) {
-        PageRequest pr = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-        return userRepository.findAll(pr);
+    public boolean checkUserRole(String userId, UserEnum role){
+        UserEntity user = userRepository.findByUserId(userId);
+        if(user.getRole().equals(role)){
+            return true;
+        }
+        return false;
     }
 }

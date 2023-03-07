@@ -2,7 +2,7 @@ spring:
   application:
     name: timedeal-service
   profiles:
-    default: dev
+    default: prod
   jpa:
     show-sql: true
     properties:
