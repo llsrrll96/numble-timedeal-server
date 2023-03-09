@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class ReqTimedeal{
     private Long product_id;
     private int limited_amount;
+    private int sale_price;
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMddHHmm")
     private LocalDateTime start_datetime;
