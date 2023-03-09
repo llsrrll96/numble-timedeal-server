@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class TimedealService {
     private final TimedealRepository timedealRepository;
     private final ProductRepository productRepository;
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
     @Transactional
     public RespTimedeal createTimedeal(ReqTimedeal reqTimedeal) {
@@ -36,6 +36,7 @@ public class TimedealService {
         return Timedeal.builder()
                 .product(product)
                 .limitedAmount(reqTimedeal.getLimited_amount())
+                .sale_price(reqTimedeal.getSale_price())
                 .startDatetime(reqTimedeal.getStart_datetime())
                 .build();
     }
@@ -49,5 +50,9 @@ public class TimedealService {
     public List<RespTimedeal> findTimedealList() {
         List<Timedeal> timedealList = timedealRepository.findAll(Sort.by(Sort.Direction.DESC,"startDatetime"));
         return timedealList.stream().map(timedeal -> convertToRespDto(timedeal)).collect(Collectors.toList());
+    }
+
+    public Timedeal findById(Long timedealId){
+        return timedealRepository.findById(timedealId).get();
     }
 }
