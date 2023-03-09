@@ -17,6 +17,6 @@ public class RespTimedeal {
     private Long timedealId;
     private ProductDto product;
     private int limitedAmount;
+    private int sale_price;
     private LocalDateTime startDatetime;
-    private int period;
 }

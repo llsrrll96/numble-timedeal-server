@@ -21,7 +21,7 @@ public class UserEntity extends BaseEntity {
     private String password;
     @Column(length = 20)
     private String name;
-    @Column(length = 200)
+    @Column(length = 200,unique = true)
     private String nickname;
     @Column(length = 20)
     private String phone;
@@ -35,6 +35,10 @@ public class UserEntity extends BaseEntity {
     private String grade;
     @Column(length = 10)
     private UserEnum role;
+
+    public UserEntity(String userId) {
+        this.userId = userId;
+    }
 
     @Builder
     public UserEntity(String password, String name, String nickname, String phone, String email) {

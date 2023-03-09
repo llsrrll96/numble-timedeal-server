@@ -1,6 +1,7 @@
 package numble.server.timedeal.domain.purchase;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.server.timedeal.domain.product.ProductEntity;
@@ -24,4 +25,12 @@ public class Purchase {
     private UserEntity user;
     private int count;
     private int price;
+
+    @Builder
+    public Purchase(ProductEntity product, UserEntity user, int count, int price) {
+        this.product = product;
+        this.user = user;
+        this.count = count;
+        this.price = price;
+    }
 }

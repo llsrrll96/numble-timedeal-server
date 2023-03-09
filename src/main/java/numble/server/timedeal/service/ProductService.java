@@ -71,6 +71,10 @@ public class ProductService {
         return convertToDto(productEntity);
     }
 
+    public ProductEntity findByProductId(Long productid){
+        return productRepository.findByProductId(productid).get();
+    }
+
     public List<RespProduct> findProductList() {
         List<ProductEntity> productEntityList = productRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         return productEntityList.stream().map(p -> convertToDto(p)).collect(Collectors.toList());

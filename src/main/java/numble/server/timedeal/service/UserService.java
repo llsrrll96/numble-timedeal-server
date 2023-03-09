@@ -23,15 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
     public APIMessage<Boolean> signup(ReqSignup reqSignup) {
         UserEntity user = convertToUserEntity(reqSignup);
         user.setRole(UserEnum.ROLE_USER);
-        UserEntity savedUserEntity = userRepository.save(user);
-        if(savedUserEntity == null) {
-            return new APIMessage<>(HttpStatus.OK.toString(),"회원가입실패",false);
-        }
+        userRepository.save(user);
+
         APIMessage<Boolean> apiMessage = new APIMessage<>();
         apiMessage.setData(true);
         apiMessage.setMessage("회원가입성공");
@@ -52,14 +50,14 @@ public class UserService {
         if(userEntity == null){
             return null;
         }
-        return userEntity.getNickname();
+        return userEntity.getUserId();
     }
 
     public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
 
-    public RespUser findById(String id) {
+    public RespUser findByIdAndConvertDto(String id) {
         UserEntity userEntity = userRepository.findById(id).get();
         RespUser respUser = convertToDto(userEntity);
         respUser.setCreatedAt(userEntity.getCreatedDate());
@@ -80,6 +78,10 @@ public class UserService {
             return false;
         }
         return true;
+    }
+
+    public UserEntity findById(String userid) {
+        return userRepository.findById(userid).get();
     }
 
     private RespUser convertToDto(UserEntity userEntity){

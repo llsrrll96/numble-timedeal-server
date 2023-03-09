@@ -52,7 +52,7 @@ public class UserController {
 
     @GetMapping("/v1/users/{userid}")
     public ResponseEntity<APIMessage<RespUser>> userInfo(@PathVariable String userid){
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"회원정보",userService.findById(userid)), HttpStatus.OK );
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"회원정보",userService.findByIdAndConvertDto(userid)), HttpStatus.OK );
     }
 
     @GetMapping("/v1/users")
