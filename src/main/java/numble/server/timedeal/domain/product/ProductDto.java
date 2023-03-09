@@ -11,7 +11,6 @@ public class ProductDto {
     private Long productId;
     private String categoryCode;
     private String userId;
-    private Long timedealId;
     private String productCode;
     private String productName;
     private String productDesc;
