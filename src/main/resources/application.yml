@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: timedeal-service
+  profiles:
+    default: prod
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
