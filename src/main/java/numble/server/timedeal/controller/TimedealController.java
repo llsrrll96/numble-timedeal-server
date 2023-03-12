@@ -18,9 +18,6 @@ import java.util.List;
 public class TimedealController {
     private final TimedealService timedealService;
 
-    /**
-     * 타임딜 등록 / 삭제 / 목록
-     * */
     @PostMapping("/v1/timedeal")
     private ResponseEntity<APIMessage<RespTimedeal>> timedealCreation(@RequestBody ReqTimedeal reqTimedeal){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"타임딜 등록",timedealService.createTimedeal(reqTimedeal)),HttpStatus.CREATED);
