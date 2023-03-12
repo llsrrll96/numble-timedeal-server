@@ -2,7 +2,6 @@ package numble.server.timedeal.domain.purchase;
 
 import numble.server.timedeal.domain.product.ProductEntity;
 import numble.server.timedeal.domain.user.UserEntity;
-import numble.server.timedeal.dto.response.RespUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
