@@ -12,6 +12,7 @@ import numble.server.timedeal.dto.request.ReqPurchase;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,8 +48,8 @@ public class PurchaseService {
     @Transactional
     public boolean purchaseTimedealWithPessimisticLock(ReqPurchase reqPurchase){
         Timedeal timedeal = timedealService.findByIdWithPessimisticLock(reqPurchase.getTimedeal_id());
-        log.info("현재남은 재고: {}",timedeal.getLimitedAmount());
-        if(timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
+
+        if(!isOpenTimeForTimedeal(timedeal) || timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
         timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
         ProductEntity product = timedeal.getProduct();
@@ -64,8 +65,8 @@ public class PurchaseService {
     @Transactional
     public boolean purchaseTimedealWithOptimisticLock(ReqPurchase reqPurchase){
         Timedeal timedeal = timedealService.findByIdWithOptimisticLock(reqPurchase.getTimedeal_id());
-        log.info("현재남은 재고: {}",timedeal.getLimitedAmount());
-        if(timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
+
+        if(!isOpenTimeForTimedeal(timedeal) || timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
         timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
         ProductEntity product = timedeal.getProduct();
@@ -93,5 +94,12 @@ public class PurchaseService {
     * */
     public List<Long> productsForUserPurchase(String userid) {
         return purchaseRepository.findProductsForUserPurchase(userService.findById(userid));
+    }
+
+    private boolean isOpenTimeForTimedeal(Timedeal timedeal){
+        if(LocalDateTime.now().compareTo(timedeal.getStartDatetime()) >= 0){
+            return true;
+        }
+        return false;
     }
 }
