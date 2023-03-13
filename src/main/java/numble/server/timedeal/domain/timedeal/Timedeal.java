@@ -24,6 +24,9 @@ public class Timedeal {
     private int sale_price;
     private LocalDateTime startDatetime;
 
+    @Version
+    private Integer version;
+
     @Builder
     public Timedeal(ProductEntity product, int limitedAmount, int sale_price, LocalDateTime startDatetime) {
         this.product = product;
