@@ -30,11 +30,45 @@ public class PurchaseService {
     @Transactional
     public boolean purchaseTimedeal(ReqPurchase reqPurchase) {
         Timedeal timedeal = timedealService.findById(reqPurchase.getTimedeal_id());
+        log.info("현재남은 재고: {}",timedeal.getLimitedAmount());
         if(timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
         timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
         ProductEntity product = timedeal.getProduct();
+        purchaseRepository.save(Purchase.builder()
+                .user(new UserEntity(reqPurchase.getUser_id()))
+                .product(product)
+                .count(reqPurchase.getCount())
+                .price(timedeal.getSale_price())
+                .build());
+        return true;
+    }
 
+    @Transactional
+    public boolean purchaseTimedealWithPessimisticLock(ReqPurchase reqPurchase){
+        Timedeal timedeal = timedealService.findByIdWithPessimisticLock(reqPurchase.getTimedeal_id());
+        log.info("현재남은 재고: {}",timedeal.getLimitedAmount());
+        if(timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
+        timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
+
+        ProductEntity product = timedeal.getProduct();
+        purchaseRepository.save(Purchase.builder()
+                .user(new UserEntity(reqPurchase.getUser_id()))
+                .product(product)
+                .count(reqPurchase.getCount())
+                .price(timedeal.getSale_price())
+                .build());
+        return true;
+    }
+
+    @Transactional
+    public boolean purchaseTimedealWithOptimisticLock(ReqPurchase reqPurchase){
+        Timedeal timedeal = timedealService.findByIdWithOptimisticLock(reqPurchase.getTimedeal_id());
+        log.info("현재남은 재고: {}",timedeal.getLimitedAmount());
+        if(timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
+        timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
+
+        ProductEntity product = timedeal.getProduct();
         purchaseRepository.save(Purchase.builder()
                 .user(new UserEntity(reqPurchase.getUser_id()))
                 .product(product)
