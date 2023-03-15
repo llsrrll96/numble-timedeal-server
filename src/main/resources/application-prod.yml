@@ -11,7 +11,3 @@ spring:
       idle-timeout: 600000
       validation-timeout: 5000
 
-server:
-  tomcat:
-    threads:
-      max: 100
