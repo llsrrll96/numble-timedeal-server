@@ -4,9 +4,14 @@ spring:
     url: jdbc:mysql://db-fj4p1.pub-cdb.ntruss.com:3306/timedeal_server?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: timedeal_admin
     password: timedeal758!@
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 300000
+      idle-timeout: 600000
+      validation-timeout: 5000
 
 server:
   tomcat:
     threads:
-      max: 300
-    connection-timeout: 300000
+      max: 100
