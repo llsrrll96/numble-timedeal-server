@@ -149,4 +149,4 @@ Timedeal findByIdWithPessimisticLock(@Param("timedealId") Long timedealId);
 <br>
 
 ## 트러블 슈팅과 회고
-[[Numble] Spring으로 타임딜 서버 구축하기 - 트러블 슈팅과 회고](
+[[Numble] Spring으로 타임딜 서버 구축하기 - 트러블 슈팅과 회고](https://javapp.tistory.com/312)
