@@ -65,6 +65,7 @@ TPS : 127.4
 
 <span style="color:red">Error 도 발생</span>
 
+### 개선내용
 
 핀포인트 확인
 ![image](https://user-images.githubusercontent.com/58140426/225526997-2ba6ea06-8292-474f-a4bc-f87d1a4c8ae6.png)
@@ -96,8 +97,8 @@ TPS: 160.5으로 올랐다.
 
 <br>
 
-### 개선내용
-#### 동시성처리
+
+## 동시성처리
 > 동시성 문제 : 변경되는 데이터에 의해 발생한다고 생각(변경되기 전의 데이터에 대한 접근과 변경된 후에 데이터에 대한 접근에 대한 데이터 정합성 문제)
 >> Race condition을 해결하는 여러 방법이 있다.
 synchronized, MySql Lock, 메시지 브로커(Redis pub/sub, kafka)
