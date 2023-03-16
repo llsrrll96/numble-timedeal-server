@@ -5,6 +5,21 @@
 # 타임딜 서버 구축, 넘블챌린지
 > 정해진 시간에 제한된 개수의 물건을 파는 쇼핑몰 기능인 타임딜 서버 구축
 
+<br/>
+
+## 기술 스택
+<img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=JAVA&logoColor=white"/></a>&nbsp;
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white"/></a>&nbsp;
+<img src="https://img.shields.io/badge/Gradle-231F20?style=flat-square&logo=Gradle&logoColor=white"/></a><br/>
+
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/></a><br/>
+
+<img src="https://img.shields.io/badge/Centos-FCC624?style=flat-square&logo=Centos&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Naver Cloud-03C75A?style=flat-square&logo=Naver&logoColor=white">
+
+<br>
+
 ## [와이어프레임](https://www.figma.com/file/FBkZCZnPz998sVdtifR8Nk/%EB%84%98%EB%B8%94%EC%B1%8C%EB%A6%B0%EC%A7%80_%ED%83%80%EC%9E%84%EB%94%9C_%EA%B9%80%EC%A3%BC%ED%98%84?node-id=0%3A1&t=PK9FNx0bXXq8LG8X-1)
  <img src="https://user-images.githubusercontent.com/58140426/225499104-c47b8a30-0fec-4f34-b160-f168f1b09119.jpg" width="720">
 
@@ -39,6 +54,7 @@
 <img src="https://user-images.githubusercontent.com/58140426/225526216-18e2ed78-8a58-4e20-9413-ff557b23c314.png" width="100">
 
 #### nGrinder 테스트
+<img src="https://user-images.githubusercontent.com/58140426/225541355-951dbc88-c2f5-44c9-b2ec-d10ec4a801e3.png" width="100">
 
 - 1만개의 재고가 있다고 가정
 - Pessimistic Lock을 걸어 동시성 처리
