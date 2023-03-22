@@ -7,7 +7,7 @@
 
 <br/>
 
-## 기술 스택
+## 1️⃣ 기술 스택
 <img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=JAVA&logoColor=white"/></a>&nbsp;
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white"/></a>&nbsp;
 <img src="https://img.shields.io/badge/Gradle-231F20?style=flat-square&logo=Gradle&logoColor=white"/></a><br/>
@@ -20,12 +20,12 @@
 
 <br>
 
-## [와이어프레임](https://www.figma.com/file/FBkZCZnPz998sVdtifR8Nk/%EB%84%98%EB%B8%94%EC%B1%8C%EB%A6%B0%EC%A7%80_%ED%83%80%EC%9E%84%EB%94%9C_%EA%B9%80%EC%A3%BC%ED%98%84?node-id=0%3A1&t=PK9FNx0bXXq8LG8X-1)
+## 2️⃣ [와이어프레임](https://www.figma.com/file/FBkZCZnPz998sVdtifR8Nk/%EB%84%98%EB%B8%94%EC%B1%8C%EB%A6%B0%EC%A7%80_%ED%83%80%EC%9E%84%EB%94%9C_%EA%B9%80%EC%A3%BC%ED%98%84?node-id=0%3A1&t=PK9FNx0bXXq8LG8X-1)
  <img src="https://user-images.githubusercontent.com/58140426/225499104-c47b8a30-0fec-4f34-b160-f168f1b09119.jpg" width="720">
 
  <br>
 
-## 아키텍처 | (CI/CD)
+## 3️⃣ 아키텍처 | 지속적 통합/지속적 배포(CI/CD)
 > Jenkins와 Naver Cloud Server를 사용해 CI/CD를 구현했습니다. 구조는 다음과 같습니다.
 <img src="https://user-images.githubusercontent.com/58140426/225501229-b75395c6-be9e-4208-867c-1f01b72a35fe.jpg" width="720">
 
@@ -35,19 +35,39 @@
 
 <br>
 
-## API 명세
+## 4️⃣ API 명세
 [📑API 명세](https://savory-hollyhock-d1e.notion.site/API-0b8217f528da43ada908b1216557eeed)
 
 <br>
 
-## ER-Diagram
+## 5️⃣ ER-Diagram
 <img src="https://user-images.githubusercontent.com/58140426/225508842-24ebcddf-bf41-43ac-929f-d94eea92a718.png" width="480">
 
 - users(유저), products(상품), category, timedeal(타임딜), purchase(구매) 총 5개 테이블로 구성
 
 <br>
 
-## 성능 측정 및 개선내용
+## 6️⃣ 동시성처리
+> 동시성 문제 : 변경되는 데이터에 의해 발생한다고 생각(변경되기 전의 데이터에 대한 접근과 변경된 후에 데이터에 대한 접근에 대한 데이터 정합성 문제)
+>> Race condition을 해결하는 여러 방법이 있다.
+synchronized, MySql Lock, 메시지 브로커(Redis pub/sub, kafka)
+- synchronized는 서버가 여러 대 일때 동시성 처리가 불가하기 때문에 제외
+- 지금 상황에서 가장 적합한 해결책을 제시하고 실행하는 것이 좋다고 생각하기 때문에 Redis pub/sub을 사용하여 여러 서버가 있다고 가정하여 처리를 하는 것도 좋다고 생각하지만 외부 시스템을 사용하진 않을 생각
+
+<br>
+
+<b>현재 프로젝트에 적합하게 DB로 사용하는 MySQL에 Lock을 걸어 동시성 처리 </b>
+> Pessimistic Lock && Optimistic Lock
+>> 여러 서버에서 동시에 같은 레코드를 업데이트하려고 할 때 발생하는 동시성 문제를 해결하는 방법
+```java
+@Lock(value = LockModeType.PESSIMISTIC_WRITE)
+@Query("select t from Timedeal t where t.timedealId = :timedealId")
+Timedeal findByIdWithPessimisticLock(@Param("timedealId") Long timedealId);
+```
+
+<br>
+
+## 7️⃣ 성능 측정 및 개선내용
 
 ### 성능 측정
 #### 서버 상태를 모니터링할 수 있는 APM 툴인 `pinpoint` 도입
@@ -97,29 +117,7 @@ TPS: 160.5으로 올랐다.
 
 <br>
 
-
-## 동시성처리
-> 동시성 문제 : 변경되는 데이터에 의해 발생한다고 생각(변경되기 전의 데이터에 대한 접근과 변경된 후에 데이터에 대한 접근에 대한 데이터 정합성 문제)
->> Race condition을 해결하는 여러 방법이 있다.
-synchronized, MySql Lock, 메시지 브로커(Redis pub/sub, kafka)
-- synchronized는 서버가 여러 대 일때 동시성 처리가 불가하기 때문에 제외
-- 지금 상황에서 가장 적합한 해결책을 제시하고 실행하는 것이 좋다고 생각하기 때문에 Redis pub/sub을 사용하여 여러 서버가 있다고 가정하여 처리를 하는 것도 좋다고 생각하지만 외부 시스템을 사용하진 않을 생각
-
-<br>
-
-
-<b>현재 프로젝트에 적합하게 DB로 사용하는 MySQL에 Lock을 걸어 동시성 처리 </b>
-> Pessimistic Lock && Optimistic Lock
->> 여러 서버에서 동시에 같은 레코드를 업데이트하려고 할 때 발생하는 동시성 문제를 해결하는 방법
-```java
-@Lock(value = LockModeType.PESSIMISTIC_WRITE)
-@Query("select t from Timedeal t where t.timedealId = :timedealId")
-Timedeal findByIdWithPessimisticLock(@Param("timedealId") Long timedealId);
-```
-
-<br>
-
-## Test(JUnit5)
+## 8️⃣ Test(JUnit5)
 > 구매 기능에 대해 멀티쓰레드를 이용하여 비동기로 테스트
 ```java
 @Test
@@ -165,5 +163,5 @@ Timedeal findByIdWithPessimisticLock(@Param("timedealId") Long timedealId);
 
 <br>
 
-## 트러블 슈팅과 회고
+## 9️⃣ 트러블 슈팅과 회고
 [[Numble] Spring으로 타임딜 서버 구축하기 - 트러블 슈팅과 회고](https://javapp.tistory.com/312)
