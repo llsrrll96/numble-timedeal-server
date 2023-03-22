@@ -54,9 +54,6 @@
 > 동시성 문제 : 변경되는 데이터에 의해 발생한다고 생각(변경되기 전의 데이터에 대한 접근과 변경된 후에 데이터에 대한 접근에 대한 데이터 정합성 문제)
 >> Race condition을 해결하는 여러 방법이 있다.
 synchronized, MySql Lock, 메시지 브로커(Redis pub/sub, kafka)
-- synchronized는 서버가 여러 대 일때 동시성 처리가 불가하기 때문에 제외
-- 현재 상황에서 가장 적합한 해결책을 제시하고 실행하는 것이 좋다고 생각했기 때문에 <br/>
-  Redis pub/sub을 사용하여 여러 서버가 있다고 가정하여 처리를 하는 것도 좋다고 생각하지만 외부 시스템을 사용하지 않음
 
 <br>
 
@@ -68,6 +65,12 @@ synchronized, MySql Lock, 메시지 브로커(Redis pub/sub, kafka)
 @Query("select t from Timedeal t where t.timedealId = :timedealId")
 Timedeal findByIdWithPessimisticLock(@Param("timedealId") Long timedealId);
 ```
+
+<br>
+
+- synchronized는 서버가 여러 대 일때 동시성 처리가 불가하기 때문에 제외
+- 현재 상황에서 가장 적합한 해결책을 제시하고 실행하는 것이 좋다고 생각했기 때문에 <br/>
+  Redis pub/sub을 사용하여 여러 서버가 있다고 가정하여 처리를 하는 것도 좋다고 생각하지만 외부 시스템을 사용하지 않음
 
 <br>
 
