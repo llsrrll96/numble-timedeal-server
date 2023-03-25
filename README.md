@@ -60,7 +60,7 @@ synchronized, MySql Lock, 메시지 브로커(Redis pub/sub, kafka)
 <b>JPA의 낙관적 락과 비관적 락을 통해 엔티티에 대한 동시성 제어 </b>
 > Pessimistic Lock && Optimistic Lock
 >> 여러 서버에서 동시에 같은 레코드를 업데이트하려고 할 때 발생하는 동시성 문제를 해결하는 방법 <br>
->> Pessimistic Lock: 데이터베이스의 락을 사용하여 동시성 제어
+>> Pessimistic Lock: JPA의 비관적 락(Pessimistic Lock)을 통해 데이터베이스의 락을 사용하여 동시성 제어
 ```java
 @Lock(value = LockModeType.PESSIMISTIC_WRITE)
 @Query("select t from Timedeal t where t.timedealId = :timedealId")
