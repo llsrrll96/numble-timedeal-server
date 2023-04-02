@@ -1,6 +1,7 @@
 package numble.server.timedeal.domain.timedeal.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class RespTimedeal {
     private Long timedealId;
     private ProductDto product;
     private int limitedAmount;
-    private int sale_price;
+    @JsonProperty("sale_price")
+    private int salePrice;
     private LocalDateTime startDatetime;
 }
