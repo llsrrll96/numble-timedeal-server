@@ -19,17 +19,9 @@ import java.util.List;
 public class PurchaseController {
     private final PurchaseService purchaseService;
 
-    @PostMapping("/v1/purchase-pessimistic")
-    private ResponseEntity<APIMessage<Boolean>> purchaseTimedealWithPessimisticLock(@RequestBody ReqPurchase reqPurchase){
-        if(purchaseService.purchaseTimedealWithPessimisticLock(reqPurchase)){
-            return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 성공",true),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 실패",false),HttpStatus.OK);
-    }
-
-    @PostMapping("/v1/purchase-optimistic")
-    private ResponseEntity<APIMessage<Boolean>> purchaseTimedealWithOptimisticLock(@RequestBody ReqPurchase reqPurchase){
-        if(purchaseService.purchaseTimedealWithOptimisticLock(reqPurchase)){
+    @PostMapping("/v1/purchase")
+    private ResponseEntity<APIMessage<Boolean>> purchaseTimedeal(@RequestBody ReqPurchase reqPurchase){
+        if(purchaseService.purchaseTimedeal(reqPurchase)){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 성공",true),HttpStatus.OK);
         }
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 실패",false),HttpStatus.OK);
