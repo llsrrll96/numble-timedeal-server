@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -24,17 +26,21 @@ public class ProductController {
     private final CategoryService categoryService;
     private final UserService userService;
 
+    private boolean isAdminUser(String userId){
+        return userService.isUserRoleByUserId(userId, UserEnum.ROLE_ADMIN);
+    }
+
     @PostMapping("/v1")
-    private ResponseEntity<APIMessage<RespProduct>> productCreation(@RequestBody ReqProduct reqProduct){
-        if(userService.checkUserRole(reqProduct.getUser_id(), UserEnum.ROLE_ADMIN)){
-            return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"상품등록성공",productService.productCreation(reqProduct)),HttpStatus.CREATED);
+    private ResponseEntity<APIMessage<RespProduct>> createProduct(@RequestBody ReqProduct reqProduct){
+        if(isAdminUser(reqProduct.getUserId())){
+            return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"상품등록성공",productService.createProduct(reqProduct)),HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "상품등록실패",new RespProduct()),HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/v1/{productid}")
     private ResponseEntity<APIMessage<RespProduct>> updateProduct(@PathVariable Long productid, @RequestBody ReqProduct reqProduct){
-        if(userService.checkUserRole(reqProduct.getUser_id(), UserEnum.ROLE_ADMIN)) {
+        if(isAdminUser(reqProduct.getUserId())) {
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"상품수정성공",productService.updateProduct(productid, reqProduct)),HttpStatus.OK);
         }
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "상품수정실패",new RespProduct()),HttpStatus.BAD_REQUEST);
@@ -49,12 +55,12 @@ public class ProductController {
     }
 
     @GetMapping("/v1")
-    private ResponseEntity<?> productList(){
+    private ResponseEntity<APIMessage<List<RespProduct>>> findProductList(){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"상품리스트",productService.findProductList()),HttpStatus.OK);
     }
 
     @GetMapping("/v1/{productid}")
-    private ResponseEntity<APIMessage<RespProduct>> productInfo(@PathVariable Long productid){
+    private ResponseEntity<APIMessage<RespProduct>> findProductInfo(@PathVariable Long productid){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"상품조회",productService.findProductInfo(productid)),HttpStatus.OK);
     }
 
@@ -62,8 +68,8 @@ public class ProductController {
     * 카테고리 등록과 삭제
     * */
     @PostMapping("/v1/category")
-    private ResponseEntity<APIMessage<CategoryDto>> categoryCreation(@RequestBody CategoryDto categoryDto){
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"카테고리 등록",categoryService.categoryCreation(categoryDto)),HttpStatus.CREATED);
+    private ResponseEntity<APIMessage<CategoryDto>> createCategory(@RequestBody CategoryDto categoryDto){
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"카테고리 등록",categoryService.createCategory(categoryDto)),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/v1/category/{code}")
