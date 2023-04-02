@@ -15,11 +15,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping(value = "purchase")
 public class PurchaseController {
     private final PurchaseService purchaseService;
 
-    @PostMapping("/v1/purchase-pessimistic")
+    @PostMapping("/v1/pessimistic")
     private ResponseEntity<APIMessage<Boolean>> purchaseTimedealWithPessimisticLock(@RequestBody ReqPurchase reqPurchase){
         if(purchaseService.purchaseTimedealWithPessimisticLock(reqPurchase)){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 성공",true),HttpStatus.OK);
@@ -27,7 +27,7 @@ public class PurchaseController {
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 실패",false),HttpStatus.OK);
     }
 
-    @PostMapping("/v1/purchase-optimistic")
+    @PostMapping("/v1/optimistic")
     private ResponseEntity<APIMessage<Boolean>> purchaseTimedealWithOptimisticLock(@RequestBody ReqPurchase reqPurchase){
         if(purchaseService.purchaseTimedealWithOptimisticLock(reqPurchase)){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 성공",true),HttpStatus.OK);
@@ -35,12 +35,12 @@ public class PurchaseController {
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 실패",false),HttpStatus.OK);
     }
 
-    @GetMapping("/v1/purchase/product/{productid}")
+    @GetMapping("/v1/product/{productid}")
     private ResponseEntity<APIMessage<PurchaseUsersDto>> usersForTimedealPurchase(@PathVariable Long productid){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "상품별 구매한 유저리스트",purchaseService.usersForTimedealPurchase(productid)),HttpStatus.OK);
     }
 
-    @GetMapping("/v1/purchase/user/{userid}")
+    @GetMapping("/v1/user/{userid}")
     private ResponseEntity<APIMessage<List<Long>>> productsForUserPurchase(@PathVariable String userid){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "유저가 구매한 상품 리스트 조회",purchaseService.productsForUserPurchase(userid)),HttpStatus.OK);
     }

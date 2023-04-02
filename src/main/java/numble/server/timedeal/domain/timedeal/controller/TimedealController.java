@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping
 @RequiredArgsConstructor
+@RestController
+@RequestMapping(value = "timedeal")
 public class TimedealController {
     private final TimedealService timedealService;
 
-    @PostMapping("/v1/timedeal")
+    @PostMapping("/v1")
     private ResponseEntity<APIMessage<RespTimedeal>> timedealCreation(@RequestBody ReqTimedeal reqTimedeal){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"타임딜 등록",timedealService.createTimedeal(reqTimedeal)),HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/v1/timedeal/{timedealid}")
+    @DeleteMapping("/v1/{timedealid}")
     private ResponseEntity<APIMessage<Boolean>> deleteTimedeal(@PathVariable Long timedealid){
         if(timedealService.deleteTimedeal(timedealid) == 1){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 삭제 성공",true),HttpStatus.OK );
@@ -31,7 +31,7 @@ public class TimedealController {
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 삭제 실패",false),HttpStatus.OK );
     }
 
-    @GetMapping("/v1/timedeal")
+    @GetMapping("/v1")
     private ResponseEntity<APIMessage<List<RespTimedeal>>> findTimedealList(){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"타임딜 목록",timedealService.findTimedealList()),HttpStatus.OK);
     }

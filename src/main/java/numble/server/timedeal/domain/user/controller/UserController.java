@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
-@RestController
-@RequestMapping()
 @RequiredArgsConstructor
+@RestController
+@RequestMapping(value = "users")
 public class UserController {
     private final UserService userService;
 
-    @PostMapping ("/v1/users/signup")
+    @PostMapping ("/v1/signup")
     public ResponseEntity<APIMessage<Boolean>> signup(@RequestBody ReqSignup reqSignup){
         return new ResponseEntity<>(userService.signup(reqSignup), HttpStatus.CREATED );
     }
 
-    @PostMapping ("/v1/users/signin")
+    @PostMapping ("/v1/signin")
     public ResponseEntity<APIMessage<Boolean>> signin(HttpSession session, @RequestBody ReqSignin reqSignin){
         if(userService.signin(reqSignin)){
             session.setAttribute("id", userService.findUserIdByNickname(reqSignin.getNickname()));
@@ -39,28 +39,28 @@ public class UserController {
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(),"로그인",false), HttpStatus.BAD_REQUEST );
     }
 
-    @GetMapping("/v1/users/logout")
+    @GetMapping("/v1/logout")
     public ResponseEntity<APIMessage<Boolean>> logout(HttpSession session) {
         session.invalidate();
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"로그아웃",true), HttpStatus.OK );
     }
-    @DeleteMapping("/v1/users/{userid}")
+    @DeleteMapping("/v1/{userid}")
     public ResponseEntity<APIMessage<Boolean>> deleteUser(@PathVariable String userid){
         userService.deleteUser(userid);
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"회원탈퇴",true), HttpStatus.OK );
     }
 
-    @GetMapping("/v1/users/{userid}")
+    @GetMapping("/v1/{userid}")
     public ResponseEntity<APIMessage<RespUser>> userInfo(@PathVariable String userid){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"회원정보",userService.findByIdAndConvertDto(userid)), HttpStatus.OK );
     }
 
-    @GetMapping("/v1/users")
+    @GetMapping("/v1")
     public ResponseEntity<Page<UserEntity>> userPagination(@PageableDefault(size = 50)Pageable pageable){
         return new ResponseEntity<>(userService.userPagination(pageable), HttpStatus.OK );
     }
 
-    @PutMapping("/v1/users/role")
+    @PutMapping("/v1/role")
     public ResponseEntity<APIMessage<Boolean>> updateRole(@RequestBody ReqRole reqRole){
         if(userService.updateRole(reqRole)){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "권한등록",true),HttpStatus.OK);
