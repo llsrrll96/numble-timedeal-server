@@ -62,12 +62,4 @@ public class TimedealService {
     public Timedeal findByIdWithOptimisticLock(Long timedealId) {
         return timedealRepository.findByIdWithOptimisticLock(timedealId);
     }
-
-    public Timedeal findByIdWithPessimisticLock(Long timedealId){
-        return timedealRepository.findByIdWithPessimisticLock(timedealId);
-    }
-
-    public Timedeal findByIdWithOptimisticLock(Long timedealId) {
-        return timedealRepository.findByIdWithOptimisticLock(timedealId);
-    }
 }
