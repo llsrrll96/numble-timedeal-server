@@ -10,8 +10,6 @@ import javax.persistence.LockModeType;
 public interface TimedealRepository extends JpaRepository<Timedeal,Long> {
     int deleteByTimedealId(Long timedealid);
 
-    Timedeal findByTimedealId(Long timedealid);
-
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("select t from Timedeal t where t.timedealId = :timedealId")
     Timedeal findByIdWithPessimisticLock(@Param("timedealId") Long timedealId);
