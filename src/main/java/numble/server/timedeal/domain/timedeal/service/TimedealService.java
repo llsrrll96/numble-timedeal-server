@@ -32,15 +32,14 @@ public class TimedealService {
         return modelMapper.map(timedeal, RespTimedeal.class);
     }
     private Timedeal convertToTimedealEntity(ReqTimedeal reqTimedeal){
-        ProductEntity product = productRepository.findByProductId(reqTimedeal.getProduct_id()).get();
+        ProductEntity product = productRepository.findByProductId(reqTimedeal.getProduct_id()).orElseThrow();
         return Timedeal.builder()
                 .product(product)
                 .limitedAmount(reqTimedeal.getLimited_amount())
-                .sale_price(reqTimedeal.getSale_price())
+                .salePrice(reqTimedeal.getSale_price())
                 .startDatetime(reqTimedeal.getStart_datetime())
                 .build();
     }
-
 
     @Transactional
     public int deleteTimedeal(Long timedealid) {
@@ -53,7 +52,7 @@ public class TimedealService {
     }
 
     public Timedeal findById(Long timedealId){
-        return timedealRepository.findById(timedealId).get();
+        return timedealRepository.findById(timedealId).orElseThrow();
     }
 
     public Timedeal findByIdWithPessimisticLock(Long timedealId){

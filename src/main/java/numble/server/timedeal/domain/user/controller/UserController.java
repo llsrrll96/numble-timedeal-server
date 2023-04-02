@@ -51,13 +51,13 @@ public class UserController {
     }
 
     @GetMapping("/v1/{userid}")
-    public ResponseEntity<APIMessage<RespUser>> userInfo(@PathVariable String userid){
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"회원정보",userService.findByIdAndConvertDto(userid)), HttpStatus.OK );
+    public ResponseEntity<APIMessage<RespUser>> getUserInfo(@PathVariable String userid){
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"회원정보",userService.findUserById(userid)), HttpStatus.OK );
     }
 
     @GetMapping("/v1")
-    public ResponseEntity<Page<UserEntity>> userPagination(@PageableDefault(size = 50)Pageable pageable){
-        return new ResponseEntity<>(userService.userPagination(pageable), HttpStatus.OK );
+    public ResponseEntity<Page<UserEntity>> getUserPagination(@PageableDefault(size = 50)Pageable pageable){
+        return new ResponseEntity<>(userService.getUserPagination(pageable), HttpStatus.OK );
     }
 
     @PutMapping("/v1/role")

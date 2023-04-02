@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public boolean signin(ReqSignin reqSignin) {
-        UserEntity userEntity = userRepository.findByNickname(reqSignin.getNickname());
+        UserEntity userEntity = userRepository.findByNickname(reqSignin.getNickname()).orElseThrow();
         if(reqSignin.getPassword().equals(userEntity.getPassword())){
             return true;
         }
@@ -46,10 +46,7 @@ public class UserService {
     }
 
     public String findUserIdByNickname(String nickname) {
-        UserEntity userEntity = userRepository.findByNickname(nickname);
-        if(userEntity == null){
-            return null;
-        }
+        UserEntity userEntity = userRepository.findByNickname(nickname).orElseThrow();
         return userEntity.getUserId();
     }
 
@@ -57,31 +54,27 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public RespUser findByIdAndConvertDto(String id) {
-        UserEntity userEntity = userRepository.findById(id).get();
+    public RespUser findUserById(String id) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow();
         RespUser respUser = convertToDto(userEntity);
         respUser.setCreatedAt(userEntity.getCreatedDate());
         return respUser;
     }
 
-    public Page<UserEntity> userPagination(Pageable pageable) {
+    public Page<UserEntity> getUserPagination(Pageable pageable) {
         PageRequest pr = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         return userRepository.findAll(pr);
     }
 
     @Transactional
     public boolean updateRole(ReqRole reqRole) {
-        try{
-            UserEntity userEntity =  userRepository.findById(reqRole.getUserid()).get();
-            userEntity.setRole(UserEnum.from(reqRole.getRole()));
-        }catch (Exception e){
-            return false;
-        }
+        UserEntity userEntity =  userRepository.findById(reqRole.getUserid()).orElseThrow();
+        userEntity.setRole(UserEnum.from(reqRole.getRole()));
         return true;
     }
 
     public UserEntity findById(String userid) {
-        return userRepository.findById(userid).get();
+        return userRepository.findById(userid).orElseThrow();
     }
 
     private RespUser convertToDto(UserEntity userEntity){
@@ -99,7 +92,7 @@ public class UserService {
     }
 
     public boolean isUserRoleByUserId(String userId, UserEnum role){
-        UserEntity user = userRepository.findByUserId(userId);
+        UserEntity user = userRepository.findByUserId(userId).orElseThrow();
         if(user.getRole().equals(role)){
             return true;
         }
