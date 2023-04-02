@@ -26,7 +26,7 @@ public class ProductService {
         Category category = Category.builder()
                 .categoryCode(reqProduct.getCategoryCode())
                 .build();
-        UserEntity userEntity = userRepository.findById(reqProduct.getUserId()).get();
+        UserEntity userEntity = userRepository.findById(reqProduct.getUserId()).orElseThrow();
 
         return ProductEntity.builder()
                 .category(category)

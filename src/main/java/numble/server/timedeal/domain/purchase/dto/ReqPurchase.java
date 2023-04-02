@@ -1,12 +1,16 @@
 package numble.server.timedeal.domain.purchase.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class ReqPurchase {
-    private String user_id;
-    private Long timedeal_id;
-    private Long product_id;
+    @JsonProperty(value = "user_id")
+    private String userId;
+    @JsonProperty(value = "timedeal_id")
+    private Long timedealId;
+    @JsonProperty(value = "product_id")
+    private Long productId;
     private int count;
     private int price;
 }
