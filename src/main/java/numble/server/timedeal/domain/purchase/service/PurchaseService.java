@@ -34,51 +34,55 @@ public class PurchaseService {
     @Transactional
     public boolean purchaseTimedeal(ReqPurchase reqPurchase) {
         Timedeal timedeal = timedealService.findById(reqPurchase.getTimedealId());
-        if(timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
-        timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
-        ProductEntity product = timedeal.getProduct();
-        purchaseRepository.save(Purchase.builder()
-                .user(new UserEntity(reqPurchase.getUserId()))
-                .product(product)
-                .count(reqPurchase.getCount())
-                .price(timedeal.getSale_price())
-                .build());
-        return true;
+        if(isPurchaseAllowed(timedeal, reqPurchase)){
+            timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
+
+            ProductEntity product = timedeal.getProduct();
+            purchaseRepository.save(Purchase.builder()
+                    .user(new UserEntity(reqPurchase.getUserId()))
+                    .product(product)
+                    .count(reqPurchase.getCount())
+                    .price(timedeal.getSalePrice())
+                    .build());
+        }
+        return false;
     }
 
     @Transactional
     public boolean purchaseTimedealWithPessimisticLock(ReqPurchase reqPurchase){
         Timedeal timedeal = timedealService.findByIdWithPessimisticLock(reqPurchase.getTimedealId());
 
-        if(!isOpenTimeForTimedeal(timedeal) || timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
-        timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
+        if(isPurchaseAllowed(timedeal, reqPurchase)) {
+            timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
-        ProductEntity product = timedeal.getProduct();
-        purchaseRepository.save(Purchase.builder()
-                .user(new UserEntity(reqPurchase.getUserId()))
-                .product(product)
-                .count(reqPurchase.getCount())
-                .price(timedeal.getSale_price())
-                .build());
-        return true;
+            ProductEntity product = timedeal.getProduct();
+            purchaseRepository.save(Purchase.builder()
+                    .user(new UserEntity(reqPurchase.getUserId()))
+                    .product(product)
+                    .count(reqPurchase.getCount())
+                    .price(timedeal.getSalePrice())
+                    .build());
+        }
+        return false;
     }
 
     @Transactional
     public boolean purchaseTimedealWithOptimisticLock(ReqPurchase reqPurchase){
         Timedeal timedeal = timedealService.findByIdWithOptimisticLock(reqPurchase.getTimedealId());
 
-        if(!isOpenTimeForTimedeal(timedeal) || timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
-        timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
+        if(isPurchaseAllowed(timedeal, reqPurchase)) {
+            timedeal.setLimitedAmount(timedeal.getLimitedAmount() - reqPurchase.getCount());
 
-        ProductEntity product = timedeal.getProduct();
-        purchaseRepository.save(Purchase.builder()
-                .user(new UserEntity(reqPurchase.getUserId()))
-                .product(product)
-                .count(reqPurchase.getCount())
-                .price(timedeal.getSale_price())
-                .build());
-        return true;
+            ProductEntity product = timedeal.getProduct();
+            purchaseRepository.save(Purchase.builder()
+                    .user(new UserEntity(reqPurchase.getUserId()))
+                    .product(product)
+                    .count(reqPurchase.getCount())
+                    .price(timedeal.getSalePrice())
+                    .build());
+        }
+        return false;
     }
 
     /**
@@ -98,8 +102,22 @@ public class PurchaseService {
         return purchaseRepository.findProductsForUserPurchase(userService.findById(userid));
     }
 
+    private boolean isPurchaseAllowed(Timedeal timedeal, ReqPurchase reqPurchase){
+        if(isOpenTimeForTimedeal(timedeal) && validatePurchaseQuantity(timedeal, reqPurchase)){
+            return true;
+        }
+        return false;
+    }
+
     private boolean isOpenTimeForTimedeal(Timedeal timedeal){
         if(LocalDateTime.now().compareTo(timedeal.getStartDatetime()) >= 0){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validatePurchaseQuantity(Timedeal timedeal, ReqPurchase reqPurchase){
+        if(timedeal.getLimitedAmount()-reqPurchase.getCount() >= 0) {
             return true;
         }
         return false;
