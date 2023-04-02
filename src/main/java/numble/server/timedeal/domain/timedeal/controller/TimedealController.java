@@ -19,7 +19,7 @@ public class TimedealController {
     private final TimedealService timedealService;
 
     @PostMapping("/v1")
-    private ResponseEntity<APIMessage<RespTimedeal>> timedealCreation(@RequestBody ReqTimedeal reqTimedeal){
+    private ResponseEntity<APIMessage<RespTimedeal>> createTimedeal(@RequestBody ReqTimedeal reqTimedeal){
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.CREATED.toString(),"타임딜 등록",timedealService.createTimedeal(reqTimedeal)),HttpStatus.CREATED);
     }
 
