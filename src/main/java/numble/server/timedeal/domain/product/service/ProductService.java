@@ -22,6 +22,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+
     private ProductEntity convertToEntity(ReqProduct reqProduct){
         Category category = Category.builder()
                 .categoryCode(reqProduct.getCategoryCode())
@@ -51,7 +52,7 @@ public class ProductService {
 
     @Transactional
     public RespProduct updateProduct(Long productid, ReqProduct reqProduct) {
-        ProductEntity productEntity = productRepository.findById(productid).get();
+        ProductEntity productEntity = productRepository.findById(productid).orElseThrow();
         productEntity.setCategory(Category.builder().categoryCode(reqProduct.getCategoryCode()).build());
         productEntity.setProductName(reqProduct.getProductName());
         productEntity.setProductDesc(reqProduct.getProductDesc());
@@ -67,12 +68,12 @@ public class ProductService {
     }
 
     public RespProduct findProductInfo(Long productid) {
-        ProductEntity productEntity = productRepository.findByProductId(productid).get();
+        ProductEntity productEntity = productRepository.findByProductId(productid).orElseThrow();
         return convertToDto(productEntity);
     }
 
     public ProductEntity findByProductId(Long productid){
-        return productRepository.findByProductId(productid).get();
+        return productRepository.findByProductId(productid).orElseThrow();
     }
 
     public List<RespProduct> findProductList() {
