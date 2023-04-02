@@ -24,19 +24,19 @@ public class ProductService {
     private final ModelMapper modelMapper = new ModelMapper();
     private ProductEntity convertToEntity(ReqProduct reqProduct){
         Category category = Category.builder()
-                .categoryCode(reqProduct.getCategory_code())
+                .categoryCode(reqProduct.getCategoryCode())
                 .build();
-        UserEntity userEntity = userRepository.findById(reqProduct.getUser_id()).get();
+        UserEntity userEntity = userRepository.findById(reqProduct.getUserId()).get();
 
         return ProductEntity.builder()
                 .category(category)
                 .userEntity(userEntity)
-                .productCode(reqProduct.getProduct_code())
-                .productName(reqProduct.getProduct_name())
-                .productDesc(reqProduct.getProduct_desc())
-                .productPrice(reqProduct.getProduct_price())
-                .salePrice(reqProduct.getSale_price())
-                .productAmount(reqProduct.getProduct_amount())
+                .productCode(reqProduct.getProductCode())
+                .productName(reqProduct.getProductName())
+                .productDesc(reqProduct.getProductDesc())
+                .productPrice(reqProduct.getProductPrice())
+                .salePrice(reqProduct.getSalePrice())
+                .productAmount(reqProduct.getProductAmount())
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class ProductService {
         return modelMapper.map(productEntity, RespProduct.class);
     }
 
-    public RespProduct productCreation(ReqProduct reqProduct) {
+    public RespProduct createProduct(ReqProduct reqProduct) {
         ProductEntity productEntity = productRepository.save(convertToEntity(reqProduct));
         return convertToDto(productEntity);
     }
@@ -52,12 +52,12 @@ public class ProductService {
     @Transactional
     public RespProduct updateProduct(Long productid, ReqProduct reqProduct) {
         ProductEntity productEntity = productRepository.findById(productid).get();
-        productEntity.setCategory(Category.builder().categoryCode(reqProduct.getCategory_code()).build());
-        productEntity.setProductName(reqProduct.getProduct_name());
-        productEntity.setProductDesc(reqProduct.getProduct_desc());
-        productEntity.setProductPrice(reqProduct.getProduct_price());
-        productEntity.setSalePrice(reqProduct.getSale_price());
-        productEntity.setProductAmount(reqProduct.getProduct_amount());
+        productEntity.setCategory(Category.builder().categoryCode(reqProduct.getCategoryCode()).build());
+        productEntity.setProductName(reqProduct.getProductName());
+        productEntity.setProductDesc(reqProduct.getProductDesc());
+        productEntity.setProductPrice(reqProduct.getProductPrice());
+        productEntity.setSalePrice(reqProduct.getSalePrice());
+        productEntity.setProductAmount(reqProduct.getProductAmount());
         return convertToDto(productEntity);
     }
 

@@ -14,7 +14,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ModelMapper  modelMapper = new ModelMapper();
 
-    public CategoryDto categoryCreation(CategoryDto categoryDto) {
+    public CategoryDto createCategory(CategoryDto categoryDto) {
         Category category = new Category(categoryDto.getCategoryCode(),categoryDto.getCategoryName());
         Category savedCategory = categoryRepository.save(category);
         return modelMapper.map(savedCategory, CategoryDto.class);

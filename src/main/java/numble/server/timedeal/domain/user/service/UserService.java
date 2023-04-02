@@ -98,7 +98,7 @@ public class UserService {
                 .build();
     }
 
-    public boolean checkUserRole(String userId, UserEnum role){
+    public boolean isUserRoleByUserId(String userId, UserEnum role){
         UserEntity user = userRepository.findByUserId(userId);
         if(user.getRole().equals(role)){
             return true;
