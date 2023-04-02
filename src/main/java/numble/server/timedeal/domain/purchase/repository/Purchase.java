@@ -1,11 +1,11 @@
-package numble.server.timedeal.domain.purchase;
+package numble.server.timedeal.domain.purchase.repository;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import numble.server.timedeal.domain.product.ProductEntity;
-import numble.server.timedeal.domain.user.UserEntity;
+import numble.server.timedeal.domain.product.repository.ProductEntity;
+import numble.server.timedeal.domain.user.repository.UserEntity;
 
 import javax.persistence.*;
 
