@@ -36,12 +36,12 @@ public class PurchaseController {
     }
 
     @GetMapping("/v1/product/{productid}")
-    private ResponseEntity<APIMessage<PurchaseUsersDto>> usersForTimedealPurchase(@PathVariable Long productid){
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "상품별 구매한 유저리스트",purchaseService.usersForTimedealPurchase(productid)),HttpStatus.OK);
+    private ResponseEntity<APIMessage<PurchaseUsersDto>> getTimedealPurchasers(@PathVariable Long productid){
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "상품별 구매한 유저리스트",purchaseService.getTimedealPurchasers(productid)),HttpStatus.OK);
     }
 
     @GetMapping("/v1/user/{userid}")
-    private ResponseEntity<APIMessage<List<Long>>> productsForUserPurchase(@PathVariable String userid){
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "유저가 구매한 상품 리스트 조회",purchaseService.productsForUserPurchase(userid)),HttpStatus.OK);
+    private ResponseEntity<APIMessage<List<Long>>> getUserPurchasedTimedeal(@PathVariable String userid){
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "유저가 구매한 상품 리스트 조회",purchaseService.getUserPurchasedTimedeal(userid)),HttpStatus.OK);
     }
 }

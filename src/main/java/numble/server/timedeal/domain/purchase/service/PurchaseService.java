@@ -29,18 +29,17 @@ public class PurchaseService {
 
     /**
     *  동시성 처리 예정
-     *  타임딜 상품 구매시 : 타임딜 상품 갯수 감소
+    *  타임딜 상품 구매시 : 타임딜 상품 갯수 감소
     * */
     @Transactional
     public boolean purchaseTimedeal(ReqPurchase reqPurchase) {
-        Timedeal timedeal = timedealService.findById(reqPurchase.getTimedeal_id());
-        log.info("현재남은 재고: {}",timedeal.getLimitedAmount());
+        Timedeal timedeal = timedealService.findById(reqPurchase.getTimedealId());
         if(timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
         timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
         ProductEntity product = timedeal.getProduct();
         purchaseRepository.save(Purchase.builder()
-                .user(new UserEntity(reqPurchase.getUser_id()))
+                .user(new UserEntity(reqPurchase.getUserId()))
                 .product(product)
                 .count(reqPurchase.getCount())
                 .price(timedeal.getSale_price())
@@ -50,14 +49,14 @@ public class PurchaseService {
 
     @Transactional
     public boolean purchaseTimedealWithPessimisticLock(ReqPurchase reqPurchase){
-        Timedeal timedeal = timedealService.findByIdWithPessimisticLock(reqPurchase.getTimedeal_id());
+        Timedeal timedeal = timedealService.findByIdWithPessimisticLock(reqPurchase.getTimedealId());
 
         if(!isOpenTimeForTimedeal(timedeal) || timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
         timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
         ProductEntity product = timedeal.getProduct();
         purchaseRepository.save(Purchase.builder()
-                .user(new UserEntity(reqPurchase.getUser_id()))
+                .user(new UserEntity(reqPurchase.getUserId()))
                 .product(product)
                 .count(reqPurchase.getCount())
                 .price(timedeal.getSale_price())
@@ -67,14 +66,14 @@ public class PurchaseService {
 
     @Transactional
     public boolean purchaseTimedealWithOptimisticLock(ReqPurchase reqPurchase){
-        Timedeal timedeal = timedealService.findByIdWithOptimisticLock(reqPurchase.getTimedeal_id());
+        Timedeal timedeal = timedealService.findByIdWithOptimisticLock(reqPurchase.getTimedealId());
 
         if(!isOpenTimeForTimedeal(timedeal) || timedeal.getLimitedAmount()-reqPurchase.getCount() < 0) return false;
         timedeal.setLimitedAmount(timedeal.getLimitedAmount()-reqPurchase.getCount());
 
         ProductEntity product = timedeal.getProduct();
         purchaseRepository.save(Purchase.builder()
-                .user(new UserEntity(reqPurchase.getUser_id()))
+                .user(new UserEntity(reqPurchase.getUserId()))
                 .product(product)
                 .count(reqPurchase.getCount())
                 .price(timedeal.getSale_price())
@@ -85,7 +84,7 @@ public class PurchaseService {
     /**
     * 상품별 구매한 유저 리스트
     * */
-    public PurchaseUsersDto usersForTimedealPurchase(Long productid) {
+    public PurchaseUsersDto getTimedealPurchasers(Long productid) {
         ProductEntity product = productService.findByProductId(productid);
         List<String> listOfUsersForTimedealPurchase = purchaseRepository.findUsersForTimedealPurchase(product);
         return new PurchaseUsersDto(product.getProductId(), listOfUsersForTimedealPurchase);
@@ -95,7 +94,7 @@ public class PurchaseService {
     * 유저가 구매한 상품 리스트 조회
      * select product_id from purchase where user_id = String;
     * */
-    public List<Long> productsForUserPurchase(String userid) {
+    public List<Long> getUserPurchasedTimedeal(String userid) {
         return purchaseRepository.findProductsForUserPurchase(userService.findById(userid));
     }
 
