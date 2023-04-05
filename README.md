@@ -1,11 +1,15 @@
 <div align="center">
- <img src="https://user-images.githubusercontent.com/58140426/225539172-962d18c0-4b52-44bc-8a36-507de8693b89.png" width="600">
+ <img src="https://user-images.githubusercontent.com/58140426/225539172-962d18c0-4b52-44bc-8a36-507de8693b89.png" width="500">
 </div>
 
-# 타임딜 서버 구축, 넘블챌린지
+# 타임딜 서버 구축, 넘블챌린지 (TOP 3 선정 (ID: darkraykim))
 > 정해진 시간에 제한된 개수의 물건을 파는 쇼핑몰 기능인 타임딜 서버 구축
 
-<br/>
+<div align="center">
+
+ <img src="https://user-images.githubusercontent.com/58140426/230098499-e8a3f0f9-cdad-4ec8-a861-0e985655c827.png" width="300">
+</div>
+
 
 ## 1️⃣ 기술 스택
 <img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=JAVA&logoColor=white"/></a>&nbsp;
