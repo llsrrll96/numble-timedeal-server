@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import numble.server.timedeal.domain.product.repository.ProductEntity;
 import numble.server.timedeal.domain.user.repository.UserEntity;
-import numble.server.timedeal.util.BaseEntity;
 
 import javax.persistence.*;
 
@@ -14,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Purchase extends BaseEntity {
+public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long purchaseId;
