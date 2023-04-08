@@ -32,12 +32,12 @@ public class TimedealService {
         return modelMapper.map(timedeal, RespTimedeal.class);
     }
     private Timedeal convertToTimedealEntity(ReqTimedeal reqTimedeal){
-        ProductEntity product = productRepository.findByProductId(reqTimedeal.getProduct_id()).orElseThrow();
+        ProductEntity product = productRepository.findByProductId(reqTimedeal.getProductId()).orElseThrow();
         return Timedeal.builder()
                 .product(product)
-                .limitedAmount(reqTimedeal.getLimited_amount())
-                .salePrice(reqTimedeal.getSale_price())
-                .startDatetime(reqTimedeal.getStart_datetime())
+                .limitedAmount(reqTimedeal.getLimitedAmount())
+                .salePrice(reqTimedeal.getSalePrice())
+                .startDatetime(reqTimedeal.getStartDatetime())
                 .build();
     }
 
