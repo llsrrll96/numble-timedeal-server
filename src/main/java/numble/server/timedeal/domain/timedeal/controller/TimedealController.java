@@ -28,7 +28,7 @@ public class TimedealController {
         if(timedealService.deleteTimedeal(timedealid) == 1){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 삭제 성공",true),HttpStatus.OK );
         }
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 삭제 실패",false),HttpStatus.OK );
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "타임딜 삭제 실패",false),HttpStatus.BAD_REQUEST );
     }
 
     @GetMapping("/v1")

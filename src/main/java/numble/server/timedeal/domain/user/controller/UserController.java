@@ -65,6 +65,6 @@ public class UserController {
         if(userService.updateRole(reqRole)){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "권한등록",true),HttpStatus.OK);
         }
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "권한등록",false),HttpStatus.OK);
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "권한등록",false),HttpStatus.BAD_REQUEST);
     }
 }

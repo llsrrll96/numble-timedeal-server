@@ -49,7 +49,7 @@ public class ProductController {
     @DeleteMapping("/v1/{productid}")
     private ResponseEntity<APIMessage<Boolean>> deleteProduct(@PathVariable Long productid){
         if(productService.deleteProduct(productid) == 0){
-            return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"상품삭제 실패",false),HttpStatus.OK);
+            return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(),"상품삭제 실패",false),HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"상품삭제 성공",true),HttpStatus.OK);
     }
@@ -75,7 +75,7 @@ public class ProductController {
     @DeleteMapping("/v1/category/{code}")
     private ResponseEntity<APIMessage<Boolean>> deleteCategory(@PathVariable String code){
         if(categoryService.deleteCategory(code) == 0){
-            return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"카테고리 삭제 실패",false),HttpStatus.OK);
+            return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(),"카테고리 삭제 실패",false),HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(),"카테고리 삭제 성공",true),HttpStatus.OK);
     }
