@@ -24,7 +24,7 @@ public class PurchaseController {
         if(purchaseService.purchaseTimedealWithPessimisticLock(reqPurchase)){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 성공",true),HttpStatus.OK);
         }
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 실패",false),HttpStatus.OK);
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "타임딜 상품 구매 실패",false),HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/v1/optimistic")
@@ -32,7 +32,7 @@ public class PurchaseController {
         if(purchaseService.purchaseTimedealWithOptimisticLock(reqPurchase)){
             return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 성공",true),HttpStatus.OK);
         }
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "타임딜 상품 구매 실패",false),HttpStatus.OK);
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "타임딜 상품 구매 실패",false),HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/v1/product/{productid}")

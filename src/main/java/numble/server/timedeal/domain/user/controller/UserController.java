@@ -63,8 +63,8 @@ public class UserController {
     @PutMapping("/v1/role")
     public ResponseEntity<APIMessage<Boolean>> updateRole(@RequestBody ReqRole reqRole){
         if(userService.updateRole(reqRole)){
-            return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "권한등록",true),HttpStatus.OK);
+            return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "권한등록성공",true),HttpStatus.OK);
         }
-        return new ResponseEntity<>(new APIMessage<>(HttpStatus.OK.toString(), "권한등록",false),HttpStatus.OK);
+        return new ResponseEntity<>(new APIMessage<>(HttpStatus.BAD_REQUEST.toString(), "권한등록실패",false),HttpStatus.BAD_REQUEST);
     }
 }
